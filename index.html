@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>埼玉県 難読地名クイズ</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f8ff;
+        }
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        h1 {
+            color: #333;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        #quiz-area, #result-area {
+            display: none;
+        }
+        #quiz-area.active, #result-area.active {
+            display: block;
+        }
+        #kanji-display {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 2rem 0;
+            color: #2c3e50;
+        }
+        input[type="text"] {
+            font-size: 1.2rem;
+            padding: 0.5rem;
+            width: 80%;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            font-size: 1.1rem;
+            padding: 0.5rem 1.5rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #feedback {
+            margin-top: 1rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            min-height: 1.5em;
+        }
+        .correct { color: #27ae60; }
+        .incorrect { color: #c0392b; }
+        #score-display {
+            font-size: 1.5rem;
+            margin: 2rem 0;
+        }
+        #question-counter {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>埼玉県 難読地名クイズ</h1>
+
+        <div id="quiz-area" class="active">
+            <div id="question-counter">問題 1 / 10</div>
+            <div id="kanji-display">漢字</div>
+            <p>ひらがなで読みを入力してください：</p>
+            <input type="text" id="answer-input" autocomplete="off" placeholder="ひらがな">
+            <br>
+            <button id="submit-btn">回答する</button>
+            <div id="feedback"></div>
+        </div>
+
+        <div id="result-area">
+            <h2>クイズ終了！</h2>
+            <div id="score-display">10問中 8問 正解！</div>
+            <button id="restart-btn">もう一度挑戦する</button>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            { kanji: "越生", hiragana: "おごせ" },
+            { kanji: "加須", hiragana: "かぞ" },
+            { kanji: "男衾", hiragana: "おぶすま" },
+            { kanji: "指扇", hiragana: "さしおうぎ" },
+            { kanji: "遊馬", hiragana: "あすま" },
+            { kanji: "小手指", hiragana: "こてさし" },
+            { kanji: "三郷", hiragana: "みさと" },
+            { kanji: "蕨", hiragana: "わらび" },
+            { kanji: "嵐山", hiragana: "らんざん" },
+            { kanji: "妻沼", hiragana: "めぬま" }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let isWaitingForNext = false;
+
+        const quizArea = document.getElementById('quiz-area');
+        const resultArea = document.getElementById('result-area');
+        const kanjiDisplay = document.getElementById('kanji-display');
+        const answerInput = document.getElementById('answer-input');
+        const submitBtn = document.getElementById('submit-btn');
+        const feedback = document.getElementById('feedback');
+        const scoreDisplay = document.getElementById('score-display');
+        const questionCounter = document.getElementById('question-counter');
+        const restartBtn = document.getElementById('restart-btn');
+
+        function initQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            quizArea.classList.add('active');
+            resultArea.classList.remove('active');
+            feedback.textContent = '';
+            feedback.className = '';
+            isWaitingForNext = false;
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const currentQ = quizData[currentQuestionIndex];
+            kanjiDisplay.textContent = currentQ.kanji;
+            questionCounter.textContent = `問題 ${currentQuestionIndex + 1} / ${quizData.length}`;
+            answerInput.value = '';
+            answerInput.focus();
+            submitBtn.textContent = '回答する';
+            isWaitingForNext = false;
+        }
+
+        function checkAnswer() {
+            if (isWaitingForNext) {
+                // 次の問題へ進む処理
+                currentQuestionIndex++;
+                if (currentQuestionIndex < quizData.length) {
+                    feedback.textContent = '';
+                    feedback.className = '';
+                    loadQuestion();
+                } else {
+                    showResult();
+                }
+                return;
+            }
+
+            const userAnswer = answerInput.value.trim();
+            if (userAnswer === '') return;
+
+            const correctAnswer = quizData[currentQuestionIndex].hiragana;
+
+            if (userAnswer === correctAnswer) {
+                feedback.textContent = '正解！';
+                feedback.className = 'correct';
+                score++;
+            } else {
+                feedback.textContent = `残念... 正解は「${correctAnswer}」`;
+                feedback.className = 'incorrect';
+            }
+
+            submitBtn.textContent = '次の問題へ';
+            isWaitingForNext = true;
+        }
+
+        function showResult() {
+            quizArea.classList.remove('active');
+            resultArea.classList.add('active');
+            scoreDisplay.textContent = `${quizData.length}問中 ${score}問 正解！`;
+        }
+
+        submitBtn.addEventListener('click', checkAnswer);
+        answerInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+
+        restartBtn.addEventListener('click', initQuiz);
+
+        // 初期化
+        initQuiz();
+    </script>
+</body>
+</html>
