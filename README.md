@@ -5,3 +5,5 @@ This is a sample README file.
 
 I cannot write Japanese.
 ```
+
+日本語が書けるようになった！
