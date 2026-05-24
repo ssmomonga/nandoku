@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>埼玉県 難読地名クイズ</title>
+    <title>難読地名クイズ</title>
     <style>
         body {
             font-family: sans-serif;
@@ -28,11 +28,19 @@
             font-size: 1.5rem;
             margin-bottom: 1rem;
         }
-        #quiz-area, #result-area {
+        #start-area, #quiz-area, #result-area {
             display: none;
         }
-        #quiz-area.active, #result-area.active {
+        #start-area.active, #quiz-area.active, #result-area.active {
             display: block;
+        }
+        select {
+            font-size: 1.1rem;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            width: 80%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
         #kanji-display {
             font-size: 3rem;
@@ -81,9 +89,34 @@
 </head>
 <body>
     <div class="container">
-        <h1>埼玉県 難読地名クイズ</h1>
+        <h1>難読地名クイズ</h1>
 
-        <div id="quiz-area" class="active">
+        <div id="start-area" class="active">
+            <p>出題地域を選択してください：</p>
+            <select id="region-select">
+                <option value="saitama">埼玉</option>
+                <option value="tokyo">東京</option>
+                <option value="all">全地域</option>
+            </select>
+            <br>
+            <p>出題数を選択してください：</p>
+            <select id="count-select">
+                <option value="1">1問</option>
+                <option value="2">2問</option>
+                <option value="3">3問</option>
+                <option value="4">4問</option>
+                <option value="5">5問</option>
+                <option value="6">6問</option>
+                <option value="7">7問</option>
+                <option value="8">8問</option>
+                <option value="9">9問</option>
+                <option value="10" selected>10問</option>
+            </select>
+            <br><br>
+            <button id="start-btn">スタート</button>
+        </div>
+
+        <div id="quiz-area">
             <div id="question-counter">問題 1 / 10</div>
             <div id="kanji-display">漢字</div>
             <p>ひらがなで読みを入力してください：</p>
@@ -101,7 +134,7 @@
     </div>
 
     <script>
-        const quizData = [
+        const saitamaData = [
             { kanji: "越生", hiragana: "おごせ" },
             { kanji: "加須", hiragana: "かぞ" },
             { kanji: "男衾", hiragana: "おぶすま" },
@@ -114,10 +147,28 @@
             { kanji: "妻沼", hiragana: "めぬま" }
         ];
 
+        const tokyoData = [
+            { kanji: "石神井", hiragana: "しゃくじい" },
+            { kanji: "舎人", hiragana: "とねり" },
+            { kanji: "日暮里", hiragana: "にっぽり" },
+            { kanji: "砧", hiragana: "きぬた" },
+            { kanji: "御徒町", hiragana: "おかちまち" },
+            { kanji: "馬喰町", hiragana: "ばくろちょう" },
+            { kanji: "東雲", hiragana: "しののめ" },
+            { kanji: "雑司が谷", hiragana: "ぞうしがや" },
+            { kanji: "保谷", hiragana: "ほうや" },
+            { kanji: "等々力", hiragana: "とどろき" }
+        ];
+
+        let activeQuizData = [];
         let currentQuestionIndex = 0;
         let score = 0;
         let isWaitingForNext = false;
 
+        const startArea = document.getElementById('start-area');
+        const regionSelect = document.getElementById('region-select');
+        const countSelect = document.getElementById('count-select');
+        const startBtn = document.getElementById('start-btn');
         const quizArea = document.getElementById('quiz-area');
         const resultArea = document.getElementById('result-area');
         const kanjiDisplay = document.getElementById('kanji-display');
@@ -128,9 +179,36 @@
         const questionCounter = document.getElementById('question-counter');
         const restartBtn = document.getElementById('restart-btn');
 
+        function showStartArea() {
+            startArea.classList.add('active');
+            quizArea.classList.remove('active');
+            resultArea.classList.remove('active');
+        }
+
         function initQuiz() {
+            const region = regionSelect.value;
+            const count = parseInt(countSelect.value, 10);
+            let pool = [];
+
+            if (region === 'saitama') {
+                pool = [...saitamaData];
+            } else if (region === 'tokyo') {
+                pool = [...tokyoData];
+            } else {
+                pool = [...saitamaData, ...tokyoData];
+            }
+
+            // Shuffle pool
+            for (let i = pool.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [pool[i], pool[j]] = [pool[j], pool[i]];
+            }
+
+            activeQuizData = pool.slice(0, count);
+
             currentQuestionIndex = 0;
             score = 0;
+            startArea.classList.remove('active');
             quizArea.classList.add('active');
             resultArea.classList.remove('active');
             feedback.textContent = '';
@@ -140,9 +218,9 @@
         }
 
         function loadQuestion() {
-            const currentQ = quizData[currentQuestionIndex];
+            const currentQ = activeQuizData[currentQuestionIndex];
             kanjiDisplay.textContent = currentQ.kanji;
-            questionCounter.textContent = `問題 ${currentQuestionIndex + 1} / ${quizData.length}`;
+            questionCounter.textContent = `問題 ${currentQuestionIndex + 1} / ${activeQuizData.length}`;
             answerInput.value = '';
             answerInput.focus();
             submitBtn.textContent = '回答する';
@@ -153,7 +231,7 @@
             if (isWaitingForNext) {
                 // 次の問題へ進む処理
                 currentQuestionIndex++;
-                if (currentQuestionIndex < quizData.length) {
+                if (currentQuestionIndex < activeQuizData.length) {
                     feedback.textContent = '';
                     feedback.className = '';
                     loadQuestion();
@@ -166,7 +244,7 @@
             const userAnswer = answerInput.value.trim();
             if (userAnswer === '') return;
 
-            const correctAnswer = quizData[currentQuestionIndex].hiragana;
+            const correctAnswer = activeQuizData[currentQuestionIndex].hiragana;
 
             if (userAnswer === correctAnswer) {
                 feedback.textContent = '正解！';
@@ -184,9 +262,10 @@
         function showResult() {
             quizArea.classList.remove('active');
             resultArea.classList.add('active');
-            scoreDisplay.textContent = `${quizData.length}問中 ${score}問 正解！`;
+            scoreDisplay.textContent = `${activeQuizData.length}問中 ${score}問 正解！`;
         }
 
+        startBtn.addEventListener('click', initQuiz);
         submitBtn.addEventListener('click', checkAnswer);
         answerInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
@@ -194,10 +273,10 @@
             }
         });
 
-        restartBtn.addEventListener('click', initQuiz);
+        restartBtn.addEventListener('click', showStartArea);
 
         // 初期化
-        initQuiz();
+        showStartArea();
     </script>
 </body>
 </html>
