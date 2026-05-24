@@ -85,6 +85,28 @@
             color: #7f8c8d;
             font-size: 0.9rem;
         }
+        .count-btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .count-btn {
+            background-color: #fff;
+            color: #3498db;
+            border: 1px solid #3498db;
+            padding: 0.5rem 1rem;
+        }
+        .count-btn:hover {
+            background-color: #ebf5fb;
+        }
+        .count-btn.selected {
+            background-color: #3498db;
+            color: white;
+        }
+        .count-btn.selected:hover {
+            background-color: #2980b9;
+        }
     </style>
 </head>
 <body>
@@ -100,18 +122,12 @@
             </select>
             <br>
             <p>出題数を選択してください：</p>
-            <select id="count-select">
-                <option value="1">1問</option>
-                <option value="2">2問</option>
-                <option value="3">3問</option>
-                <option value="4">4問</option>
-                <option value="5">5問</option>
-                <option value="6">6問</option>
-                <option value="7">7問</option>
-                <option value="8">8問</option>
-                <option value="9">9問</option>
-                <option value="10" selected>10問</option>
-            </select>
+            <div id="count-btn-container" class="count-btn-container">
+                <button type="button" class="count-btn" data-value="1">1問</button>
+                <button type="button" class="count-btn" data-value="3">3問</button>
+                <button type="button" class="count-btn" data-value="5">5問</button>
+                <button type="button" class="count-btn selected" data-value="10">10問</button>
+            </div>
             <br><br>
             <button id="start-btn">スタート</button>
         </div>
@@ -167,7 +183,8 @@
 
         const startArea = document.getElementById('start-area');
         const regionSelect = document.getElementById('region-select');
-        const countSelect = document.getElementById('count-select');
+        let selectedCount = 10;
+        const countBtns = document.querySelectorAll('.count-btn');
         const startBtn = document.getElementById('start-btn');
         const quizArea = document.getElementById('quiz-area');
         const resultArea = document.getElementById('result-area');
@@ -187,7 +204,7 @@
 
         function initQuiz() {
             const region = regionSelect.value;
-            const count = parseInt(countSelect.value, 10);
+            const count = selectedCount;
             let pool = [];
 
             if (region === 'saitama') {
@@ -274,6 +291,14 @@
         });
 
         restartBtn.addEventListener('click', showStartArea);
+
+        countBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                countBtns.forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                selectedCount = parseInt(btn.getAttribute('data-value'), 10);
+            });
+        });
 
         // 初期化
         showStartArea();
