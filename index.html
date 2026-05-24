@@ -96,6 +96,7 @@
             <select id="region-select">
                 <option value="saitama">埼玉</option>
                 <option value="tokyo">東京</option>
+                <option value="kanagawa">神奈川</option>
                 <option value="all">全地域</option>
             </select>
             <br>
@@ -160,6 +161,19 @@
             { kanji: "等々力", hiragana: "とどろき" }
         ];
 
+        const kanagawaData = [
+            { kanji: "弘明寺", hiragana: "ぐみょうじ" },
+            { kanji: "帷子", hiragana: "かたびら" },
+            { kanji: "尻手", hiragana: "しって" },
+            { kanji: "大豆戸", hiragana: "まめど" },
+            { kanji: "鉄", hiragana: "くろがね" },
+            { kanji: "逸見", hiragana: "へみ" },
+            { kanji: "不入斗", hiragana: "いりまず" },
+            { kanji: "公所", hiragana: "ぐぞ" },
+            { kanji: "鵠沼", hiragana: "くげぬま" },
+            { kanji: "酒匂", hiragana: "さかわ" }
+        ];
+
         let activeQuizData = [];
         let currentQuestionIndex = 0;
         let score = 0;
@@ -194,8 +208,10 @@
                 pool = [...saitamaData];
             } else if (region === 'tokyo') {
                 pool = [...tokyoData];
+            } else if (region === 'kanagawa') {
+                pool = [...kanagawaData];
             } else {
-                pool = [...saitamaData, ...tokyoData];
+                pool = [...saitamaData, ...tokyoData, ...kanagawaData];
             }
 
             // Shuffle pool
