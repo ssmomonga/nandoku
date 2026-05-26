@@ -119,6 +119,7 @@
                 <option value="saitama">埼玉</option>
                 <option value="tokyo">東京</option>
                 <option value="kanagawa">神奈川</option>
+                <option value="kagawa">香川</option>
                 <option value="hokkaido">北海道</option>
                 <option value="aomori">青森</option>
                 <option value="all">全地域</option>
@@ -192,6 +193,19 @@
             { kanji: "酒匂", hiragana: "さかわ" }
         ];
 
+        const kagawaData = [
+            { kanji: "栗林", hiragana: "りつりん" },
+            { kanji: "仏生山", hiragana: "ぶっしょうざん" },
+            { kanji: "綾川", hiragana: "あやがわ" },
+            { kanji: "引田", hiragana: "ひけた" },
+            { kanji: "沙弥", hiragana: "しゃみ" },
+            { kanji: "豊浜", hiragana: "とよはま" },
+            { kanji: "津田", hiragana: "つだ" },
+            { kanji: "端岡", hiragana: "はなおか" },
+            { kanji: "檀紙", hiragana: "だんし" },
+            { kanji: "鬼無", hiragana: "きなし" }
+        ];
+
         const hokkaidoData = [
             { kanji: "重蘭窮", hiragana: "ちぷらんけうし" },
             { kanji: "占冠", hiragana: "しむかっぷ" },
@@ -255,12 +269,14 @@
                 pool = [...tokyoData];
             } else if (region === 'kanagawa') {
                 pool = [...kanagawaData];
+            } else if (region === 'kagawa') {
+                pool = [...kagawaData];
             } else if (region === 'hokkaido') {
                 pool = [...hokkaidoData];
             } else if (region === 'aomori') {
                 pool = [...aomoriData];
             } else {
-                pool = [...saitamaData, ...tokyoData, ...kanagawaData, ...hokkaidoData, ...aomoriData];
+                pool = [...saitamaData, ...tokyoData, ...kanagawaData, ...kagawaData, ...hokkaidoData, ...aomoriData];
             }
 
             // Shuffle pool
