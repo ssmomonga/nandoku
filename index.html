@@ -120,6 +120,7 @@
                 <option value="tokyo">東京</option>
                 <option value="kanagawa">神奈川</option>
                 <option value="hokkaido">北海道</option>
+                <option value="aomori">青森</option>
                 <option value="all">全地域</option>
             </select>
             <br>
@@ -204,6 +205,19 @@
             { kanji: "忍路", hiragana: "おしょろ" }
         ];
 
+        const aomoriData = [
+            { kanji: "七戸", hiragana: "しちのへ" },
+            { kanji: "野辺地", hiragana: "のべじ" },
+            { kanji: "潟上", hiragana: "かたかみ" },
+            { kanji: "大鰐", hiragana: "おおわに" },
+            { kanji: "鶴田", hiragana: "つるた" },
+            { kanji: "深浦", hiragana: "ふかうら" },
+            { kanji: "今別", hiragana: "いまべつ" },
+            { kanji: "平川", hiragana: "ひらかわ" },
+            { kanji: "蓬田", hiragana: "よもぎた" },
+            { kanji: "外ヶ浜", hiragana: "そとがはま" }
+        ];
+
         let activeQuizData = [];
         let currentQuestionIndex = 0;
         let score = 0;
@@ -243,8 +257,10 @@
                 pool = [...kanagawaData];
             } else if (region === 'hokkaido') {
                 pool = [...hokkaidoData];
+            } else if (region === 'aomori') {
+                pool = [...aomoriData];
             } else {
-                pool = [...saitamaData, ...tokyoData, ...kanagawaData, ...hokkaidoData];
+                pool = [...saitamaData, ...tokyoData, ...kanagawaData, ...hokkaidoData, ...aomoriData];
             }
 
             // Shuffle pool
