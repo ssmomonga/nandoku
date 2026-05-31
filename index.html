@@ -122,6 +122,7 @@
                 <option value="kagawa">香川</option>
                 <option value="hokkaido">北海道</option>
                 <option value="aomori">青森</option>
+                <option value="ishikawa">石川</option>
                 <option value="all">全地域</option>
             </select>
             <br>
@@ -232,6 +233,19 @@
             { kanji: "外ヶ浜", hiragana: "そとがはま" }
         ];
 
+        const ishikawaData = [
+            { kanji: "羽咋", hiragana: "はくい" },
+            { kanji: "珠洲", hiragana: "すず" },
+            { kanji: "鳳至", hiragana: "ふげし" },
+            { kanji: "蚊爪", hiragana: "かがつめ" },
+            { kanji: "四十万", hiragana: "しじま" },
+            { kanji: "主計町", hiragana: "かずえまち" },
+            { kanji: "宇出津", hiragana: "うしつ" },
+            { kanji: "動橋", hiragana: "いぶりはし" },
+            { kanji: "宝達志水", hiragana: "ほうだつしみず" },
+            { kanji: "直下", hiragana: "そそり" }
+        ];
+
         let activeQuizData = [];
         let currentQuestionIndex = 0;
         let score = 0;
@@ -275,8 +289,10 @@
                 pool = [...hokkaidoData];
             } else if (region === 'aomori') {
                 pool = [...aomoriData];
+            } else if (region === 'ishikawa') {
+                pool = [...ishikawaData];
             } else {
-                pool = [...saitamaData, ...tokyoData, ...kanagawaData, ...kagawaData, ...hokkaidoData, ...aomoriData];
+                pool = [...saitamaData, ...tokyoData, ...kanagawaData, ...kagawaData, ...hokkaidoData, ...aomoriData, ...ishikawaData];
             }
 
             // Shuffle pool
