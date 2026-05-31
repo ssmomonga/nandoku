@@ -116,13 +116,13 @@
         <div id="start-area" class="active">
             <p>出題地域を選択してください：</p>
             <select id="region-select">
+                <option value="hokkaido">北海道</option>
+                <option value="aomori">青森</option>
+                <option value="ishikawa">石川</option>
                 <option value="saitama">埼玉</option>
                 <option value="tokyo">東京</option>
                 <option value="kanagawa">神奈川</option>
                 <option value="kagawa">香川</option>
-                <option value="hokkaido">北海道</option>
-                <option value="aomori">青森</option>
-                <option value="ishikawa">石川</option>
                 <option value="all">全地域</option>
             </select>
             <br>
@@ -155,6 +155,45 @@
     </div>
 
     <script>
+        const hokkaidoData = [
+            { kanji: "重蘭窮", hiragana: "ちぷらんけうし" },
+            { kanji: "占冠", hiragana: "しむかっぷ" },
+            { kanji: "興部", hiragana: "おこっぺ" },
+            { kanji: "音威子府", hiragana: "おといねっぷ" },
+            { kanji: "抜海", hiragana: "ばっかい" },
+            { kanji: "濃昼", hiragana: "ごきびる" },
+            { kanji: "屈斜路", hiragana: "くっしゃろ" },
+            { kanji: "倶知安", hiragana: "くっちゃん" },
+            { kanji: "長万部", hiragana: "おしゃまんべ" },
+            { kanji: "忍路", hiragana: "おしょろ" }
+        ];
+
+        const aomoriData = [
+            { kanji: "七戸", hiragana: "しちのへ" },
+            { kanji: "野辺地", hiragana: "のべじ" },
+            { kanji: "潟上", hiragana: "かたかみ" },
+            { kanji: "大鰐", hiragana: "おおわに" },
+            { kanji: "鶴田", hiragana: "つるた" },
+            { kanji: "深浦", hiragana: "ふかうら" },
+            { kanji: "今別", hiragana: "いまべつ" },
+            { kanji: "平川", hiragana: "ひらかわ" },
+            { kanji: "蓬田", hiragana: "よもぎた" },
+            { kanji: "外ヶ浜", hiragana: "そとがはま" }
+        ];
+
+        const ishikawaData = [
+            { kanji: "羽咋", hiragana: "はくい" },
+            { kanji: "珠洲", hiragana: "すず" },
+            { kanji: "鳳至", hiragana: "ふげし" },
+            { kanji: "蚊爪", hiragana: "かがつめ" },
+            { kanji: "四十万", hiragana: "しじま" },
+            { kanji: "主計町", hiragana: "かずえまち" },
+            { kanji: "宇出津", hiragana: "うしつ" },
+            { kanji: "動橋", hiragana: "いぶりはし" },
+            { kanji: "宝達志水", hiragana: "ほうだつしみず" },
+            { kanji: "直下", hiragana: "そそり" }
+        ];
+
         const saitamaData = [
             { kanji: "越生", hiragana: "おごせ" },
             { kanji: "加須", hiragana: "かぞ" },
@@ -207,45 +246,6 @@
             { kanji: "鬼無", hiragana: "きなし" }
         ];
 
-        const hokkaidoData = [
-            { kanji: "重蘭窮", hiragana: "ちぷらんけうし" },
-            { kanji: "占冠", hiragana: "しむかっぷ" },
-            { kanji: "興部", hiragana: "おこっぺ" },
-            { kanji: "音威子府", hiragana: "おといねっぷ" },
-            { kanji: "抜海", hiragana: "ばっかい" },
-            { kanji: "濃昼", hiragana: "ごきびる" },
-            { kanji: "屈斜路", hiragana: "くっしゃろ" },
-            { kanji: "倶知安", hiragana: "くっちゃん" },
-            { kanji: "長万部", hiragana: "おしゃまんべ" },
-            { kanji: "忍路", hiragana: "おしょろ" }
-        ];
-
-        const aomoriData = [
-            { kanji: "七戸", hiragana: "しちのへ" },
-            { kanji: "野辺地", hiragana: "のべじ" },
-            { kanji: "潟上", hiragana: "かたかみ" },
-            { kanji: "大鰐", hiragana: "おおわに" },
-            { kanji: "鶴田", hiragana: "つるた" },
-            { kanji: "深浦", hiragana: "ふかうら" },
-            { kanji: "今別", hiragana: "いまべつ" },
-            { kanji: "平川", hiragana: "ひらかわ" },
-            { kanji: "蓬田", hiragana: "よもぎた" },
-            { kanji: "外ヶ浜", hiragana: "そとがはま" }
-        ];
-
-        const ishikawaData = [
-            { kanji: "羽咋", hiragana: "はくい" },
-            { kanji: "珠洲", hiragana: "すず" },
-            { kanji: "鳳至", hiragana: "ふげし" },
-            { kanji: "蚊爪", hiragana: "かがつめ" },
-            { kanji: "四十万", hiragana: "しじま" },
-            { kanji: "主計町", hiragana: "かずえまち" },
-            { kanji: "宇出津", hiragana: "うしつ" },
-            { kanji: "動橋", hiragana: "いぶりはし" },
-            { kanji: "宝達志水", hiragana: "ほうだつしみず" },
-            { kanji: "直下", hiragana: "そそり" }
-        ];
-
         let activeQuizData = [];
         let currentQuestionIndex = 0;
         let score = 0;
@@ -277,7 +277,13 @@
             const count = selectedCount;
             let pool = [];
 
-            if (region === 'saitama') {
+            if (region === 'hokkaido') {
+                pool = [...hokkaidoData];
+            } else if (region === 'aomori') {
+                pool = [...aomoriData];
+            } else if (region === 'ishikawa') {
+                pool = [...ishikawaData];
+            } else if (region === 'saitama') {
                 pool = [...saitamaData];
             } else if (region === 'tokyo') {
                 pool = [...tokyoData];
@@ -285,14 +291,8 @@
                 pool = [...kanagawaData];
             } else if (region === 'kagawa') {
                 pool = [...kagawaData];
-            } else if (region === 'hokkaido') {
-                pool = [...hokkaidoData];
-            } else if (region === 'aomori') {
-                pool = [...aomoriData];
-            } else if (region === 'ishikawa') {
-                pool = [...ishikawaData];
             } else {
-                pool = [...saitamaData, ...tokyoData, ...kanagawaData, ...kagawaData, ...hokkaidoData, ...aomoriData, ...ishikawaData];
+                pool = [...hokkaidoData, ...aomoriData, ...ishikawaData, ...saitamaData, ...tokyoData, ...kanagawaData, ...kagawaData];
             }
 
             // Shuffle pool
