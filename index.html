@@ -123,6 +123,7 @@
                 <option value="tokyo">東京</option>
                 <option value="kanagawa">神奈川</option>
                 <option value="kagawa">香川</option>
+                <option value="okinawa">沖縄</option>
                 <option value="all">全地域</option>
             </select>
             <br>
@@ -246,6 +247,19 @@
             { kanji: "鬼無", hiragana: "きなし" }
         ];
 
+        const okinawaData = [
+            { kanji: "保栄茂", hiragana: "びん" },
+            { kanji: "勢理客", hiragana: "じっちゃく" },
+            { kanji: "喜屋武", hiragana: "きゃん" },
+            { kanji: "南風原", hiragana: "はえばる" },
+            { kanji: "仲村渠", hiragana: "なかんだかり" },
+            { kanji: "東風平", hiragana: "こちんだ" },
+            { kanji: "為又", hiragana: "びいまた" },
+            { kanji: "饒辺", hiragana: "のへん" },
+            { kanji: "北谷", hiragana: "ちゃたん" },
+            { kanji: "安謝", hiragana: "あじゃ" }
+        ];
+
         let activeQuizData = [];
         let currentQuestionIndex = 0;
         let score = 0;
@@ -291,8 +305,10 @@
                 pool = [...kanagawaData];
             } else if (region === 'kagawa') {
                 pool = [...kagawaData];
+            } else if (region === 'okinawa') {
+                pool = [...okinawaData];
             } else {
-                pool = [...hokkaidoData, ...aomoriData, ...ishikawaData, ...saitamaData, ...tokyoData, ...kanagawaData, ...kagawaData];
+                pool = [...hokkaidoData, ...aomoriData, ...ishikawaData, ...saitamaData, ...tokyoData, ...kanagawaData, ...kagawaData, ...okinawaData];
             }
 
             // Shuffle pool
